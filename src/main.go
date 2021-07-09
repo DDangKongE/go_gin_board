@@ -1,23 +1,28 @@
 package main
 
 import (
-	"time"
+	"fmt"
+	"go_board/src/Config"
+	"go_board/src/Models"
+	"go_board/src/Routes"
 
-	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
+var err error
+
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.GET("time", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"time": time.Now(),
-		})
-	})
+	Config.DB, err = gorm.Open("mysql", Config.DbURL(Config.BuildDBConfig()))
+
+	if err != nil {
+		fmt.Println("status : ", err)
+	}
+
+	defer Config.DB.Close()
+
+	Config.DB.AutoMigrate(&Models.Board{}, &Models.User{})
+
+	r := Routes.SetupRouter()
 
 	r.Run()
 }
