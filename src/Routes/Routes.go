@@ -11,7 +11,7 @@ func SetupRouter() *gin.Engine {
 	api := r.Group("/api")
 	{
 		api.GET("board", Controllers.GetBoard)
-		api.POST("board", Controllers.GetBoard)
+		api.POST("board", Controllers.CreateBoard)
 	}
 	return r
 }
