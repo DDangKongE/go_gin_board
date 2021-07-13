@@ -3,7 +3,7 @@ package Models
 import "go_board/src/Config"
 
 type User struct {
-	User_ID       uint   `gorm:"primaryKey"`
+	USER_ID       uint   `gorm:"primaryKey"`
 	USER_EMAIL    string `json:"user_email"`
 	USER_PASSWORD string `json:"user_password"`
 	USER_NICKNAME string `json:"user_nickname"`

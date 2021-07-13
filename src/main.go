@@ -7,21 +7,31 @@ import (
 	"go_board/src/Routes"
 
 	"github.com/gin-contrib/cors"
-	"github.com/jinzhu/gorm"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 var err error
 
 func main() {
-	Config.DB, err = gorm.Open("mysql", Config.DbURL(Config.BuildDBConfig()))
+	// Config.DB, err = gorm.Open(mysql.Open("gorm.db"), &gorm.Config{Config.DbURL(Config.BuildDBConfig())})
+
+	Config.DB, err = gorm.Open(mysql.Open(Config.DbURL(Config.BuildDBConfig())), &gorm.Config{})
 
 	if err != nil {
 		fmt.Println("status : ", err)
 	}
 
-	defer Config.DB.Close()
+	sqlDB, err := Config.DB.DB()
+
+	if err != nil {
+		fmt.Println("status : ", err)
+	}
+
+	defer sqlDB.Close()
 
 	Config.DB.AutoMigrate(&Models.Board{}, &Models.User{})
+	Config.DB.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Models.Board{}, &Models.User{})
 
 	r := Routes.SetupRouter()
 

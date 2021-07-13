@@ -17,7 +17,7 @@ type boardService struct {
 func (srv *boardService) GetAllBoard() *[]Models.Board {
 	board := &[]Models.Board{}
 
-	if err := Config.DB.Find(&board).Error; err != nil {
+	if err := Config.DB.Preload("User").Find(&board).Error; err != nil {
 		return nil
 	}
 
