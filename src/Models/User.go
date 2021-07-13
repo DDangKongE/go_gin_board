@@ -12,3 +12,8 @@ type Login struct {
 	USER_EMAIL    string `json:"user_email"`
 	USER_PASSWORD string `json:"user_password"`
 }
+
+type Token struct {
+	Access_token string
+	User         User
+}

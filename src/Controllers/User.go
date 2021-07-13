@@ -37,10 +37,10 @@ func LoginUser(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err)
 	}
 
-	if err := service.User.LoginUser(login); nil != err {
+	if result, err := service.User.LoginUser(login); nil != err {
 		c.AbortWithStatusJSON(http.StatusConflict, err)
 	} else {
-		c.JSON(http.StatusCreated, login)
+		c.JSON(http.StatusCreated, result)
 	}
 }
 

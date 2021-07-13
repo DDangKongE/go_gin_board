@@ -5,11 +5,13 @@ import (
 	"go_board/src/Config"
 	"go_board/src/Models"
 	"sync"
-
-	"github.com/lestrrat-go/jwx/jwt"
 )
 
 var User = &userService{
+	mutex: &sync.Mutex{},
+}
+
+var AccessToken = &userService{
 	mutex: &sync.Mutex{},
 }
 
@@ -69,18 +71,28 @@ func (srv *userService) GetUserOne(email string) *Models.User {
 	return user
 }
 
-func (srv *userService) LoginUser(login *Models.Login) jwt.Token {
+func (srv *userService) LoginUser(login *Models.Login) (Token Models.Token, err error) {
 	srv.mutex.Lock()
 	defer srv.mutex.Unlock()
 	user := srv.GetUserOne(login.USER_EMAIL)
 
 	if isLogin := Config.CheckPasswordHash(login.USER_PASSWORD, user.USER_PASSWORD); isLogin == false {
-		return nil
+		return
 	}
 
-	result := Sign(user)
+	token, err := JwtService(user)
+	payload := Models.User{
+		USER_ID:       user.USER_ID,
+		USER_EMAIL:    user.USER_EMAIL,
+		USER_NICKNAME: user.USER_NICKNAME,
+	}
 
-	return result
+	result := Models.Token{
+		Access_token: token,
+		User:         payload,
+	}
+
+	return result, nil
 }
 
 // func (srv *userService) UpdateUser() *Models.User {
