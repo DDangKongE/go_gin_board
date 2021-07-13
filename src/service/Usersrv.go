@@ -80,12 +80,13 @@ func (srv *userService) LoginUser(login *Models.Login) (Token Models.Token, err 
 		return
 	}
 
-	token, err := JwtService(user)
-	payload := Models.User{
+	payload := Models.Payload{
 		USER_ID:       user.USER_ID,
 		USER_EMAIL:    user.USER_EMAIL,
 		USER_NICKNAME: user.USER_NICKNAME,
 	}
+
+	token, err := JwtService(&payload)
 
 	result := Models.Token{
 		Access_token: token,

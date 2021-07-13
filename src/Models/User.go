@@ -15,5 +15,11 @@ type Login struct {
 
 type Token struct {
 	Access_token string
-	User         User
+	User         Payload
+}
+
+type Payload struct {
+	USER_ID       uint
+	USER_EMAIL    string
+	USER_NICKNAME string
 }

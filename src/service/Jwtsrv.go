@@ -9,7 +9,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-func JwtService(user *Models.User) (string, error) {
+func JwtService(user *Models.Payload) (string, error) {
 	var err error
 
 	os.Setenv("ACCESS_SECRET", "dkanrjskTma")
