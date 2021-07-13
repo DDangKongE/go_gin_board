@@ -20,11 +20,11 @@ func CreateBoard(c *gin.Context) {
 	board := &Models.Board{}
 
 	if err := c.BindJSON(board); nil != err {
-		c.AbortWithStatus(http.StatusNotFound)
+		c.AbortWithStatusJSON(http.StatusNotFound, err)
 	}
 
 	if err := service.Board.CreateBoard(board); nil != err {
-		c.AbortWithStatus(http.StatusNotFound)
+		c.AbortWithStatusJSON(http.StatusNotFound, err)
 	} else {
 		c.JSON(http.StatusCreated, board)
 	}

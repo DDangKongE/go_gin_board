@@ -12,6 +12,9 @@ func SetupRouter() *gin.Engine {
 	{
 		api.GET("board", Controllers.GetBoard)
 		api.POST("board", Controllers.CreateBoard)
+		api.GET("user", Controllers.GetUser)
+		api.POST("user", Controllers.CreateUser)
+		api.POST("user/login", Controllers.LoginUser)
 	}
 	return r
 }
